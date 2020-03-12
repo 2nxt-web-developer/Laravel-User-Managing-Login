@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header">Manage Users</div>
 
@@ -14,6 +14,7 @@
                                 <th scope="col">Name</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Roles</th>
+                                <th scope="col">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -22,9 +23,13 @@
                                 <th>{{ $user->name }}</th>
                                 <th>{{ $user->email }}</th>
                                 <th>{{ implode(', ', $user->roles()->get()->pluck('name')->toArray())}}</th>
+                                <th>
+                                    <a href="{{ route('admin.users.edit', $user->id) }}">
+                                        <button type="button" class="btn btn-primary btn-small">Edit</button>
+                                    </a>
+                                </th>
                             </tr>
-                            <tr>
-                                @endforeach
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
