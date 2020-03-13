@@ -9,6 +9,8 @@ class UsersTableSeeder extends Seeder
     /**
      * Run the database seeds.
      *
+     * ------->>>>>> php artisan migrate:fresh --seed to run seeder
+     * 
      * @return void
      */
     public function run()
@@ -21,24 +23,26 @@ class UsersTableSeeder extends Seeder
 
         $admin = User::create([
             'name' => 'Admin',
-            'email'=> 'admin@admin.com',
-            'password'=> bcrypt('admin')
+            'email' => 'admin@admin.com',
+            'password' => bcrypt('admin')
         ]);
 
         $author = User::create([
             'name' => 'Author',
-            'email'=> 'author@author.com',
-            'password'=> bcrypt('author')
+            'email' => 'author@author.com',
+            'password' => bcrypt('author')
         ]);
 
         $user = User::create([
             'name' => 'user',
-            'email'=> 'user@user.com',
-            'password'=> bcrypt('user')
+            'email' => 'user@user.com',
+            'password' => bcrypt('user')
         ]);
 
         $admin->roles()->attach($adminRole);
         $author->roles()->attach($authorRole);
         $user->roles()->attach($userRole);
+
+        factory(App\User::class, 50)->create();
     }
 }

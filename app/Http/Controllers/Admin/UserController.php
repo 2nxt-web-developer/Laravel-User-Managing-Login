@@ -18,7 +18,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('admin.users.index')->with('users', User::all());
+        return view('admin.users.index')->with('users', User::paginate(10));
     }
 
     /**
@@ -29,11 +29,11 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        if(Auth::user()->id == $id){
-           return redirect()->route('admin.users.index')->with('warning','You are not allowed to edit yourself.'); 
+        if (Auth::user()->id == $id) {
+            return redirect()->route('admin.users.index')->with('warning', 'You are not allowed to edit yourself.');
         }
 
-        return view('admin.users.edit')->with(['user'=> User::find($id), 'roles' => Role::all()]);
+        return view('admin.users.edit')->with(['user' => User::find($id), 'roles' => Role::all()]);
     }
 
     /**
@@ -45,14 +45,14 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if(Auth::user()->id == $id){
-            return redirect()->route('admin.users.index')->with('warning','You are not allowed to edit yourself.'); 
-         }
+        if (Auth::user()->id == $id) {
+            return redirect()->route('admin.users.index')->with('warning', 'You are not allowed to edit yourself.');
+        }
 
-         $user = User::find($id);
-         $user->roles()->sync($request->roles);
+        $user = User::find($id);
+        $user->roles()->sync($request->roles);
 
-         return redirect()->route('admin.users.index')->with('success','User has been updated.');
+        return redirect()->route('admin.users.index')->with('success', 'User has been updated.');
     }
 
     /**
@@ -63,6 +63,11 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if (Auth::user()->id == $id) {
+            return redirect()->route('admin.users.index')->with('danger', 'You are not allowed to delete yourself.');
+        }
+
+        User::destroy($id);
+        return redirect()->route('admin.users.index')->with('success', 'User has been updated.');
     }
 }
